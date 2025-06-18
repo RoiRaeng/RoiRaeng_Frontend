@@ -16,7 +16,7 @@ import Banner2 from '@/assets/icons/banner-promotion2.jpg';
 
 import Meta from 'antd/es/card/Meta';
 
-import './menu.modile.css'
+import { useCateglory } from '@/context/CategloryContext';
 
 type MenuItem = {
   id: number;
@@ -77,8 +77,10 @@ export default function MenuPage() {
   const handleSlideChange = (currentSlide: number) => {
     setCurrentIndex(currentSlide);
   };
+  const { categlories, setCateglories } = useCateglory();
 
   const [cart, setCart] = useState<MenuItem[]>([]);
+  console.log('categlories in context: ', categlories);
 
   const addToCart = (item: MenuItem) => {
     setCart((prev) => [...prev, item]);
@@ -131,14 +133,18 @@ export default function MenuPage() {
         <span className="font-bold">หมวดหมู่</span>
         <button className="text-base">ทั้งหมด</button>
       </div>
-
       <div className="flex gap-4 mt-4 overflow-x-auto hide-scrollbar pb-2">
         {categlory.map((item) => (
-          <div
-            key={item.id}
-            className="flex flex-col items-center min-w-[100px]"
-          >
-            <div className="flex items-center justify-center bg-white overflow-hidden mb-2 h-24 w-24 rounded-lg ">
+            <button
+              key={item.id}
+              className="flex flex-col items-center min-w-[100px] focus:outline-none"
+              type="button"
+              onClick={() => {
+              setCateglories([item]);
+              window.location.href = '/categlory';
+              }}
+            >
+              <div className="flex items-center justify-center bg-white overflow-hidden mb-2 h-24 w-24 rounded-lg ">
               <Image
                 src={item.image}
                 alt={item.name}
@@ -146,11 +152,11 @@ export default function MenuPage() {
                 height={96}
                 className="object-cover h-full w-full"
               />
-            </div>
-            <span className="font-normal text-black text-center">
+              </div>
+              <span className="font-normal text-black text-center">
               {item.name}
-            </span>
-          </div>
+              </span>
+            </button>
         ))}
       </div>
 
