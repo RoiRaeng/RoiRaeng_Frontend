@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Input } from 'antd';
+import { Card, Carousel, Input } from 'antd';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
@@ -11,7 +11,12 @@ import CategloryPizza from '@/assets/icons/categlory-pizza.svg';
 import CategloryHambur from '@/assets/icons/categlory-hamburger.svg';
 import CateglorySanwish from '@/assets/icons/categlory-sandwish.svg';
 
+import Banner1 from '@/assets/icons/banner-promotion.jpg';
+import Banner2 from '@/assets/icons/banner-promotion2.jpg';
+
 import Meta from 'antd/es/card/Meta';
+
+import './menu.modile.css'
 
 type MenuItem = {
   id: number;
@@ -35,12 +40,43 @@ const categlory: Categlory[] = [
   { id: 1, name: 'พิซซ่า', image: CategloryPizza },
   { id: 2, name: 'เบอร์เกอร์', image: CategloryHambur },
   { id: 3, name: 'แซนวิซ', image: CateglorySanwish },
-  // { id: 4, name: 'แซนวิซ', image: CateglorySanwish },
+  { id: 4, name: 'แซนวิซ', image: CateglorySanwish },
+  { id: 5, name: 'แซนวิซ', image: CateglorySanwish },
+  { id: 6, name: 'แซนวิซ', image: CateglorySanwish },
 ];
+
+const carouselItems = [
+  {
+    content: Banner1,
+    alt: 'เมนูยอดฮิต',
+    title: 'สายเนื้อห้ามพลาด!',
+    subtitle: 'เนื้อวัวย่างหอมๆ ชุ่มฉ่ำ ละลายในปาก พร้อมชีสเยิ้มๆ และซอสรสเด็ด',
+  },
+  {
+    content: Banner2,
+    alt: 'เมนูยอดฮิต',
+    title: 'กรอบฟินจนหยุดไม่อยู่!',
+    subtitle: 'ไก่ทอดกรอบนอกนุ่มใน คลุกซอสสูตรพิเศษ กลิ่นหอมเย้ายวนทุกคำ',
+  },
+];
+
+const contentStyle: React.CSSProperties = {
+  margin: 0,
+  height: '180px',
+  color: '#fff',
+  lineHeight: '180px',
+  textAlign: 'center',
+  background: '#364d79',
+  borderRadius: '16px 16px 0px 0px',
+};
 
 export default function MenuPage() {
   const searchParams = useSearchParams();
   const table = searchParams.get('table');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const handleSlideChange = (currentSlide: number) => {
+    setCurrentIndex(currentSlide);
+  };
 
   const [cart, setCart] = useState<MenuItem[]>([]);
 
@@ -87,13 +123,7 @@ export default function MenuPage() {
         </div>
         {/* รูปเบอร์เกอร์ด้านขวา */}
         <div className="flex items-center justify-end">
-          <Image
-            src={BurgerPromo}
-            alt="burger"
-            width={167}
-            height={125}
-            className="object-contain"
-          />
+          <Image src={BurgerPromo} alt="burger" width={167} height={125} />
         </div>
       </div>
 
@@ -102,27 +132,67 @@ export default function MenuPage() {
         <button className="text-base">ทั้งหมด</button>
       </div>
 
-      <div className="flex gap-4 mt-4 overflow-x-auto pb-2">
+      <div className="flex gap-4 mt-4 overflow-x-auto hide-scrollbar pb-2">
         {categlory.map((item) => (
           <div
-        key={item.id}
-        className="flex flex-col items-center min-w-[100px]"
+            key={item.id}
+            className="flex flex-col items-center min-w-[100px]"
           >
-        <div className="flex items-center justify-center bg-white overflow-hidden mb-2 rounded-full">
-          <Image
-            src={item.image}
-            alt={item.name}
-            width={120}
-            height={120}
-            className="object-contain"
-          />
-        </div>
-        <span className="font-normal text-black">{item.name}</span>
+            <div className="flex items-center justify-center bg-white overflow-hidden mb-2 h-24 w-24 rounded-lg ">
+              <Image
+                src={item.image}
+                alt={item.name}
+                width={96}
+                height={96}
+                className="object-cover h-full w-full"
+              />
+            </div>
+            <span className="font-normal text-black text-center">
+              {item.name}
+            </span>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
+      <span className="text-black text-xl font-bold mt-4">เมนูยอดฮิต</span>
+      <div className="mt-5">
+        <div className="mt-5">
+          <Carousel arrows infinite={false} afterChange={handleSlideChange}>
+            {carouselItems.map((item, index) => (
+              <div key={index}>
+                <Image
+                  src={item.content}
+                  alt={item.alt || ''}
+                  style={{
+                    width: '100%',
+                    height: '180px',
+                    objectFit: 'cover',
+                    objectPosition: 'center 40%',
+                    borderRadius: '16px 16px 0px 0px',
+                  }}
+                  width={800}
+                  height={160}
+                  draggable={true}
+                />
+              </div>
+            ))}
+          </Carousel>
+
+          {/* ส่วนแสดง title/subtitle */}
+          <div className=" border border-gray-300 p-4 rounded-b-[16px] bg-white">
+            <Meta
+              title={carouselItems[currentIndex].title}
+              description=""
+              className="text-black text-lg font-extrabold"
+            />
+            <span className="text-black block mt-1">
+              {carouselItems[currentIndex].subtitle}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
         {mockMenu.map((item) => (
           <div key={item.id} className="border p-4 rounded shadow">
             <h2 className="text-lg font-semibold">{item.name}</h2>
@@ -135,9 +205,9 @@ export default function MenuPage() {
             </button>
           </div>
         ))}
-      </div>
+      </div> */}
 
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <h2 className="text-xl font-bold mb-2">ตะกร้าอาหาร</h2>
         {cart.length === 0 ? (
           <p>ยังไม่มีรายการ</p>
@@ -158,7 +228,7 @@ export default function MenuPage() {
         >
           ส่งออเดอร์
         </button>
-      </div>
+      </div> */}
     </main>
   );
 }
