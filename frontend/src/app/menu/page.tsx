@@ -1,240 +1,255 @@
 'use client';
 
-import { Card, Carousel, Input } from 'antd';
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useCateglory } from '@/context/CategloryContext';
+import BackIcon from '@/assets/icons/back-icon.svg';
+import ShareIcon from '@/assets/icons/share-icon.svg';
+import SearchIcon from '@/assets/icons/search-icon.svg';
 
-import { CiSearch } from 'react-icons/ci';
-import Image from 'next/image';
-import BurgerPromo from '@/assets/icons/burger-icon.svg';
 import CategloryPizza from '@/assets/icons/categlory-pizza.svg';
 import CategloryHambur from '@/assets/icons/categlory-hamburger.svg';
 import CateglorySanwish from '@/assets/icons/categlory-sandwish.svg';
 
-import Banner1 from '@/assets/icons/banner-promotion.jpg';
-import Banner2 from '@/assets/icons/banner-promotion2.jpg';
+import burgur1 from '@/assets/icons/burgur-1.jpg';
+import burgur2 from '@/assets/icons/burgur-2.jpg';
+import burgur3 from '@/assets/icons/burgur-3.jpg';
+import burgur4 from '@/assets/icons/burgur-4.jpg';
 
-import Meta from 'antd/es/card/Meta';
-
-import { useCateglory } from '@/context/CategloryContext';
-
-type MenuItem = {
-  id: number;
-  name: string;
-  price: number;
-};
-
-type Categlory = {
-  id: number;
-  name: string;
-  image: string;
-};
-
-const mockMenu: MenuItem[] = [
-  { id: 1, name: 'ข้าวกระเพราไก่ไข่ดาว', price: 55 },
-  { id: 2, name: 'ข้าวผัดหมู', price: 50 },
-  { id: 3, name: 'ต้มยำกุ้ง', price: 80 },
-];
-
-const categlory: Categlory[] = [
-  { id: 1, name: 'พิซซ่า', image: CategloryPizza },
-  { id: 2, name: 'เบอร์เกอร์', image: CategloryHambur },
-  { id: 3, name: 'แซนวิซ', image: CateglorySanwish },
-  { id: 4, name: 'แซนวิซ', image: CateglorySanwish },
-  { id: 5, name: 'แซนวิซ', image: CateglorySanwish },
-  { id: 6, name: 'แซนวิซ', image: CateglorySanwish },
-];
-
-const carouselItems = [
-  {
-    content: Banner1,
-    alt: 'เมนูยอดฮิต',
-    title: 'สายเนื้อห้ามพลาด!',
-    subtitle: 'เนื้อวัวย่างหอมๆ ชุ่มฉ่ำ ละลายในปาก พร้อมชีสเยิ้มๆ และซอสรสเด็ด',
-  },
-  {
-    content: Banner2,
-    alt: 'เมนูยอดฮิต',
-    title: 'กรอบฟินจนหยุดไม่อยู่!',
-    subtitle: 'ไก่ทอดกรอบนอกนุ่มใน คลุกซอสสูตรพิเศษ กลิ่นหอมเย้ายวนทุกคำ',
-  },
-];
-
-const contentStyle: React.CSSProperties = {
-  margin: 0,
-  height: '180px',
-  color: '#fff',
-  lineHeight: '180px',
-  textAlign: 'center',
-  background: '#364d79',
-  borderRadius: '16px 16px 0px 0px',
-};
+import Image from 'next/image';
+import { Tabs, TabsProps } from 'antd';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 export default function MenuPage() {
-  const searchParams = useSearchParams();
-  const table = searchParams.get('table');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const handleSlideChange = (currentSlide: number) => {
-    setCurrentIndex(currentSlide);
-  };
   const { categlories, setCateglories } = useCateglory();
+  const [mounted, setMounted] = useState(false);
 
-  const [cart, setCart] = useState<MenuItem[]>([]);
+  useEffect(() => {
+    // เพื่อ simulate mount animation หลังจากโหลด
+    const timer = setTimeout(() => setMounted(true), 100); // เพิ่ม delay เล็กน้อยให้ดู smooth
+    return () => clearTimeout(timer);
+  }, []);
+
   console.log('categlories in context: ', categlories);
 
-  const addToCart = (item: MenuItem) => {
-    setCart((prev) => [...prev, item]);
-  };
+  const products = [
+    {
+      id: 'e7a5c4b0-9c2f-4e31-9b79-1e0d1f3c1a1b',
+      name: 'เบอร์เกอร์ชีสลาวา',
+      price: 129,
+      image: burgur1,
+    },
+    {
+      id: '1f6e5c89-4e17-4dcb-bf02-345e7a942f0c',
+      name: 'เบอร์เกอร์ไก่กรอบ',
+      price: 159,
+      image: burgur2,
+    },
+    {
+      id: '7c843d3f-31f3-44cb-8f9e-0298bfc3b7c1',
+      name: 'เบอร์เกอร์ข้าวทงคัตสึ',
+      price: 78,
 
-  const handleOrder = () => {
-    if (!table) {
-      alert('ไม่พบหมายเลขโต๊ะ');
-      return;
-    }
-    console.log('ส่งออเดอร์จากโต๊ะ: ', table);
-    console.log('รายการอาหาร: ', cart);
+      image: burgur3,
+    },
+    {
+      id: '7c843d3f-3193-44cb-8f9e-0298bfc3b7c1',
+      name: 'เบอร์เกอร์เจ ',
+      price: 99,
+      image: burgur4,
+    },
+  ];
 
-    alert(`ส่งออเดอร์เรียบร้อยจากโต๊ะ ${table}`);
-    setCart([]);
-  };
+  const hamburgers = [
+    {
+      id: 'e7a5c4b0-9c2f-4e31-9b79-1e0d1f3c1a1b',
+      name: 'แฮมเบอร์เกอร์หมู',
+      price: 129,
+      image: CategloryHambur,
+    },
+  ];
+
+  const pizzas = [
+    {
+      id: '1f6e5c89-4e17-4dcb-bf02-345e7a942f0c',
+      name: 'พิซซ่าชีสเยิ้ม',
+      price: 159,
+      image: CategloryPizza,
+    },
+  ];
+
+  const sanwishes = [
+    {
+      id: '7c843d3f-31f3-44cb-8f9e-0298bfc3b7c1',
+      name: 'แซนด์วิชทูน่า',
+      price: 99,
+      image: CateglorySanwish,
+    },
+  ];
+
+  function renderProductList(data: any[]) {
+    return data.map((product) => (
+      <div key={product.id} className="flex flex-col items-start bg-white">
+        <Image
+          src={product.image}
+          alt={product.name}
+          width={250}
+          height={250}
+          className="object-cover h-[180px] w-[180px] border rounded-lg"
+        />
+        <div className="mt-2 text-left">
+          <p className="font-light text-xl">{product.name}</p>
+          <p className="my-2 text-xl font-medium">{product.price} ฿</p>
+        </div>
+      </div>
+    ));
+  }
+
+  const items: TabsProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <span
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 35,
+            height: 20,
+          }}
+        >
+          <Image src={SearchIcon} alt="SearchIcon" width={30} height={30} />
+        </span>
+      ),
+      children: (
+        <div className="grid grid-cols-2 gap-4">
+          {renderProductList(products)}
+        </div>
+      ),
+    },
+    // {
+    //   key: '2',
+    //   label: 'โปรโมชั่น',
+    //   children: 'Content of Tab Pane 2',
+    // },
+    {
+      key: '3',
+      label: 'เบอร์เกอร์',
+      children: (
+        <div className="grid grid-cols-2 gap-4">
+          {hamburgers.map((hamburgers, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-start rounded-lg bg-white"
+            >
+              <Image
+                src={hamburgers.image}
+                alt={hamburgers.name}
+                width={250}
+                height={250}
+                className="object-cover h-full w-full"
+              />
+              <div className="mt-2 text-left">
+                <p className="mt-2 font-normal text-2xl">{hamburgers.name}</p>
+                <p className="mt-2 text-xl font-bold">฿{hamburgers.price}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      key: '4',
+      label: 'พิซซ่า',
+      children: (
+        <div className="grid grid-cols-2 gap-4">
+          {pizzas.map((pizzas, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-start rounded-lg bg-white"
+            >
+              <Image
+                src={pizzas.image}
+                alt={pizzas.name}
+                width={250}
+                height={250}
+                className="object-cover h-full w-full"
+              />
+              <div className="mt-2 text-left">
+                <p className="mt-2 font-normal text-2xl">{pizzas.name}</p>
+                <p className="mt-2 text-xl font-bold">฿{pizzas.price}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      key: '5',
+      label: 'แซนวิช',
+      children: (
+        <div className="grid grid-cols-2 gap-4">
+          {sanwishes.map((sanwishes, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-start rounded-lg bg-white"
+            >
+              <Image
+                src={sanwishes.image}
+                alt={sanwishes.name}
+                width={250}
+                height={250}
+                className="object-cover h-full w-full"
+              />
+              <div className="mt-2 text-left">
+                <p className="mt-2 font-normal text-2xl">{sanwishes.name}</p>
+                <p className="mt-2 text-xl font-bold">฿{sanwishes.price}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      key: '6',
+      label: 'เครื่องดื่ม',
+      children: 'Content of Tab Pane 4',
+    },
+    {
+      key: '7',
+      label: 'ของหวาน',
+      children: 'Content of Tab Pane 4',
+    },
+  ];
 
   return (
     <main className="p-6 bg-white">
-      <h1 className="text-2xl text-black font-bold mb-4 text-center">
-        โต๊ะหมายเลข {table ? `(โต๊ะ ${table})` : ''}
-      </h1>
-      <Input
-        size="large"
-        placeholder="large size"
-        prefix={<CiSearch />}
-        style={{ borderRadius: 9999 }}
-      />
-
-      <div className="bg-[#D7284E] rounded-2xl mt-4 h-fit w-full flex items-center justify-between px-6">
-        {/* ข้อความด้านซ้าย */}
-        <div className="py-3 flex flex-col items-start">
-          <h2 className="text-2xl font-bold text-white">โปรโมชั่นสุดคุ้ม!</h2>
-          <p className="text-sm mt-4 text-white">
-            อร่อยจัดเต็มใน
-            <br />
-            <span className="ml-6">ราคาสุดพิเศษ!!!</span>
-          </p>
-          <button className="bg-white text-black font-bold px-4 py-1 rounded-full text-sm shadow mt-5">
-            ดูทั้งหมด &gt;
-          </button>
-        </div>
-        {/* รูปเบอร์เกอร์ด้านขวา */}
-        <div className="flex items-center justify-end">
-          <Image src={BurgerPromo} alt="burger" width={167} height={125} />
-        </div>
-      </div>
-
-      <div className="flex flex-row items-center justify-between text-black text-xl mt-4 ">
-        <span className="font-bold">หมวดหมู่</span>
-        <button className="text-base">ทั้งหมด</button>
-      </div>
-      <div className="flex gap-4 mt-4 overflow-x-auto hide-scrollbar pb-2">
-        {categlory.map((item) => (
-            <button
-              key={item.id}
-              className="flex flex-col items-center min-w-[100px] focus:outline-none"
-              type="button"
-              onClick={() => {
-              setCateglories([item]);
-              window.location.href = '/categlory';
-              }}
-            >
-              <div className="flex items-center justify-center bg-white overflow-hidden mb-2 h-24 w-24 rounded-lg ">
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={96}
-                height={96}
-                className="object-cover h-full w-full"
-              />
-              </div>
-              <span className="font-normal text-black text-center">
-              {item.name}
-              </span>
-            </button>
-        ))}
-      </div>
-
-      <span className="text-black text-xl font-bold mt-4">เมนูยอดฮิต</span>
-      <div className="mt-5">
-        <div className="mt-5">
-          <Carousel arrows infinite={false} afterChange={handleSlideChange}>
-            {carouselItems.map((item, index) => (
-              <div key={index}>
-                <Image
-                  src={item.content}
-                  alt={item.alt || ''}
-                  style={{
-                    width: '100%',
-                    height: '180px',
-                    objectFit: 'cover',
-                    objectPosition: 'center 40%',
-                    borderRadius: '16px 16px 0px 0px',
-                  }}
-                  width={800}
-                  height={160}
-                  draggable={true}
-                />
-              </div>
-            ))}
-          </Carousel>
-
-          {/* ส่วนแสดง title/subtitle */}
-          <div className=" border border-gray-300 p-4 rounded-b-[16px] bg-white">
-            <Meta
-              title={carouselItems[currentIndex].title}
-              description=""
-              className="text-black text-lg font-extrabold"
-            />
-            <span className="text-black block mt-1">
-              {carouselItems[currentIndex].subtitle}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
-        {mockMenu.map((item) => (
-          <div key={item.id} className="border p-4 rounded shadow">
-            <h2 className="text-lg font-semibold">{item.name}</h2>
-            <p className="text-sm text-gray-600">ราคา: {item.price} บาท</p>
-            <button
-              onClick={() => addToCart(item)}
-              className="mt-2 bg-orange-500 text-white px-3 py-1 rounded"
-            >
-              เพิ่มใส่ตะกร้า
-            </button>
-          </div>
-        ))}
-      </div> */}
-
-      {/* <div className="mt-6">
-        <h2 className="text-xl font-bold mb-2">ตะกร้าอาหาร</h2>
-        {cart.length === 0 ? (
-          <p>ยังไม่มีรายการ</p>
-        ) : (
-          <ul className="list-disc pl-6">
-            {cart.map((item, idx) => (
-              <li key={idx}>
-                {item.name} - {item.price} บาท
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <button
-          onClick={handleOrder}
-          className="mt-4 bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
-          disabled={cart.length === 0}
+      <div className="flex flex-row items-center mb-4 relative">
+        <div
+          className="w-[45px] flex-shrink-0 cursor-pointer"
+          onClick={() => window.history.back()}
         >
-          ส่งออเดอร์
-        </button>
-      </div> */}
+          <Image src={BackIcon} alt="BackIcon" width={45} height={45} />
+        </div>
+        <h1 className="flex-1 text-2xl text-black font-bold text-center">
+          รายการอาหาร
+        </h1>
+        <div className="w-[45px] flex-shrink-0 flex justify-end">
+          <Image src={ShareIcon} alt="ShareIcon" width={45} height={45} />
+        </div>
+      </div>
+      {mounted && (
+        <motion.div
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
+          <Tabs
+            defaultActiveKey="2"
+            items={items}
+            onChange={(key) => console.log(key)}
+          />
+        </motion.div>
+      )}{' '}
     </main>
   );
 }

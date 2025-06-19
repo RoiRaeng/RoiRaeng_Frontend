@@ -4,6 +4,8 @@ import './globals.css';
 import { CategloryProvider } from '@/context/CategloryContext';
 import { ConfigProvider } from 'antd';
 import thTH from 'antd/locale/th_TH'; // ถ้าใช้ภาษาไทย
+import { Kanit } from 'next/font/google';
+// import 'antd/dist/reset.css'; 
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -13,6 +15,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+});
+
+const kanit = Kanit({
+  weight: ['100', '200', '300', '400', '500', '700', '800'],
+  subsets: ['thai'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -28,16 +36,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${kanit.className}`}
       >
         <ConfigProvider
           locale={thTH}
           theme={{
+            token: {
+              fontFamily: 'Kanit, sans-serif',
+            },
             components: {
               Tabs: {
-          itemActiveColor: 'black',
-          inkBarColor: '#D7284E',
-          colorPrimary: 'black',
+                itemActiveColor: 'black',
+                inkBarColor: '#D7284E',
+                colorPrimary: 'black',
               },
             },
           }}

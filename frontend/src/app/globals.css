@@ -16,6 +16,7 @@
   :root {
     --background: white;
     --foreground: #171717; /* เปลี่ยนเป็นสีดำ */
+    --font-kanit: 'Kanit', sans-serif;
   }
 }
 
