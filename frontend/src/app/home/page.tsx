@@ -89,7 +89,7 @@ export default function MenuPage() {
   const { categlories, setCateglories } = useCateglory();
 
   const [cart, setCart] = useState<MenuItem[]>([]);
-  console.log('categlories in context: ', categlories);
+  // console.log('categlories in context: ', categlories);
 
   return (
     <main className="p-6 bg-white">
@@ -149,7 +149,7 @@ export default function MenuPage() {
                 type="button"
                 onClick={() => {
                   setCateglories([item]);
-                  window.location.href = '/categlory';
+                  window.location.href = '/menu';
                 }}
               >
                 <div className="flex items-center justify-center bg-white overflow-hidden mb-2 h-24 w-24 rounded-lg ">
