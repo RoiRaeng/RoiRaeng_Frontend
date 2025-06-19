@@ -1,26 +1,20 @@
-'use client';
+import React from 'react'
+import { Input } from 'antd';
+// import Icon from './public/icon/globe.svg'
+// D:\Roi Raeng\Frontend\frontend\public\globe.svg
 
-import { Card, Carousel, Input } from 'antd';
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-
-import { CiSearch } from 'react-icons/ci';
-import Image from 'next/image';
-import BurgerPromo from '@/assets/icons/burger-icon.svg';
-import CategloryPizza from '@/assets/icons/categlory-pizza.svg';
-import CategloryHambur from '@/assets/icons/categlory-hamburger.svg';
-import CateglorySanwish from '@/assets/icons/categlory-sandwish.svg';
-
-import Banner1 from '@/assets/icons/banner-promotion.jpg';
-import Banner2 from '@/assets/icons/banner-promotion2.jpg';
-
-import Meta from 'antd/es/card/Meta';
-
-export default function MenuPage() {
-  
+function LoginPage() {
   return (
-<div className=''>
-  this is login page
-</div>
-  );
+    <div className='min-h-screen w-full bg-[#DB3B5E]'>
+      <h3 className='text-2xl text-white font-bold'>เข้าสู่ระบบ</h3>
+      <Input 
+        size='large' 
+        // addonAfter={Icon}
+        placeholder='ชื่อผู้ใช้' 
+        className='bg-red-500'>
+      </Input>
+    </div>
+  )
 }
+
+export default LoginPage
