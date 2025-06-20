@@ -95,27 +95,24 @@ export default function MenuPage() {
     return data.map((product) => (
       <div
         key={product.id}
-        className="flex flex-col items-start bg-white cursor-pointer"
+        className="flex flex-col bg-white cursor-pointer"
         onClick={() => {
           console.log('Product clicked:', product);
           useProductStore.getState().setProduct(product);
           router.push('/menu/detail', {
-        // state: {
-        //   id: product.id,
-        //   image: product.image,
-        //   name: product.name,
-        //   price: product.price,
-        // },
           } as any);
         }}
-      >
-        <Image
-          src={product.image}
-          alt={product.name}
-          width={250}
-          height={250}
-          className="object-cover h-[180px] w-[180px] border rounded-lg"
-        />
+            >
+        <div className="w-full aspect-square relative flex items-center justify-center overflow-hidden rounded-lg bg-gray-100">
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            style={{ objectFit: 'cover' }}
+            className="rounded-lg"
+            sizes="(max-width: 300px) 100vw, 250px"
+          />
+        </div>
         <div className="mt-2 text-left">
           <p className="font-light text-xl">{product.name}</p>
           <p className="my-2 text-xl font-medium">{product.price} ฿</p>
@@ -137,7 +134,7 @@ export default function MenuPage() {
             height: 20,
           }}
         >
-          <Image src={SearchIcon} alt="SearchIcon" width={30} height={30} />
+          <Image src={SearchIcon} alt="SearchIcon" width={20} height={20} />
         </span>
       ),
       children: (
