@@ -101,7 +101,7 @@ export default function MenuPage() {
         onClick={() => {
           console.log('Product clicked:', product);
           useProductStore.getState().setProduct(product);
-          router.push('/menu/detail', {} as any);
+          router.push('/menu/detail');
         }}
       >
         <div className="w-full aspect-square relative flex items-center justify-center overflow-hidden rounded-lg bg-gray-100">
