@@ -4,6 +4,7 @@ import { useCateglory } from '@/context/CategloryContext';
 import BackIcon from '@/assets/icons/back-icon.svg';
 import ShareIcon from '@/assets/icons/share-icon.svg';
 import SearchIcon from '@/assets/icons/search-icon.svg';
+import { CommentOutlined, CustomerServiceOutlined } from '@ant-design/icons';
 
 import CategloryPizza from '@/assets/icons/categlory-pizza.svg';
 import CategloryHambur from '@/assets/icons/categlory-hamburger.svg';
@@ -14,25 +15,26 @@ import burgur2 from '@/assets/icons/burgur-2.jpg';
 import burgur3 from '@/assets/icons/burgur-3.jpg';
 import burgur4 from '@/assets/icons/burgur-4.jpg';
 
+
 import { useProductStore } from '@/utils/store';
 
 import Image from 'next/image';
-import { Tabs, TabsProps } from 'antd';
+import { FloatButton, Tabs, TabsProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import FloatButtonHome from '@/components/FloatButton';
+import CartBar from '@/components/CartBar';
 
 export default function MenuPage() {
   const { categlories, setCateglories } = useCateglory();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // เพื่อ simulate mount animation หลังจากโหลด
-    const timer = setTimeout(() => setMounted(true), 100); // เพิ่ม delay เล็กน้อยให้ดู smooth
+    const timer = setTimeout(() => setMounted(true), 50);
     return () => clearTimeout(timer);
   }, []);
 
-  // console.log('categlories in context: ', categlories);
 
   const products = [
     {
@@ -99,10 +101,9 @@ export default function MenuPage() {
         onClick={() => {
           console.log('Product clicked:', product);
           useProductStore.getState().setProduct(product);
-          router.push('/menu/detail', {
-          } as any);
+          router.push('/menu/detail', {} as any);
         }}
-            >
+      >
         <div className="w-full aspect-square relative flex items-center justify-center overflow-hidden rounded-lg bg-gray-100">
           <Image
             src={product.image}
@@ -239,21 +240,22 @@ export default function MenuPage() {
   ];
 
   return (
-    <main className="p-6 bg-white">
+    <main className="max-w-md mx-auto min-h-screen p-6 bg-white relative">
       <div className="flex flex-row items-center mb-4 relative">
         <div
           className="w-[45px] flex-shrink-0 cursor-pointer"
-          onClick={() => window.history.back()}
+          onClick={() => router.push('/home?table=NTpidXJnZXItc2VjcmV0LWtleQ==')}
         >
           <Image src={BackIcon} alt="BackIcon" width={45} height={45} />
         </div>
-        <h1 className="flex-1 text-2xl text-black font-bold text-center">
+        <h1 className="flex-1 text-3xl text-black font-medium text-center">
           รายการอาหาร
         </h1>
         <div className="w-[45px] flex-shrink-0 flex justify-end">
           <Image src={ShareIcon} alt="ShareIcon" width={45} height={45} />
         </div>
       </div>
+
       {mounted && (
         <motion.div
           initial={{ opacity: 0, y: 0 }}
@@ -265,8 +267,9 @@ export default function MenuPage() {
             items={items}
             onChange={(key) => console.log(key)}
           />
+          <CartBar/>
         </motion.div>
-      )}{' '}
+      )}
     </main>
   );
 }

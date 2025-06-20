@@ -1,11 +1,10 @@
-'use client'; // ต้องใช้เพราะมี useState/useEffect
+'use client';
 
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 export type Categlory = {
   id: number;
   name: string;
-//   image: string; // หรือ StaticImageData ถ้าใช้กับ next/image
 };
 
 type CategloryContextType = {

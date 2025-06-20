@@ -1,7 +1,11 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  devIndicators: {
+    buildActivity: false,
+  },
+  swcMinify: true,
+  productionBrowserSourceMaps: false,
   async redirects() {
     return [
       {

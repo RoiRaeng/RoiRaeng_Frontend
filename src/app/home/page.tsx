@@ -14,10 +14,14 @@ import CateglorySanwish from '@/assets/icons/categlory-sandwish.svg';
 
 import Banner1 from '@/assets/icons/banner-promotion.jpg';
 import Banner2 from '@/assets/icons/banner-promotion2.jpg';
+import { useRouter } from 'next/navigation';
+
 
 import Meta from 'antd/es/card/Meta';
 
 import { useCateglory } from '@/context/CategloryContext';
+import { decode, encode } from '@/utils/jwt-encryption';
+import FloatButtonHome from '@/components/FloatButton';
 
 type MenuItem = {
   id: number;
@@ -76,25 +80,31 @@ export default function MenuPage() {
   const table = searchParams.get('table');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [tableNumber, setTableNumber] = useState<string | null>(null);
+  const { setCateglories } = useCateglory();
+
+    const router = useRouter();
 
   useEffect(() => {
-    // เพื่อ simulate mount animation หลังจากโหลด
-    const timer = setTimeout(() => setMounted(true), 100); // เพิ่ม delay เล็กน้อยให้ดู smooth
+    const timer = setTimeout(() => setMounted(true), 100);
+    if (table) {
+      const decodedTable = decode(table) as any;
+      setTableNumber(decodedTable);
+      localStorage.setItem('table', decodedTable || '');
+    }
     return () => clearTimeout(timer);
-  }, []);
+  }, [table]);
 
   const handleSlideChange = (currentSlide: number) => {
     setCurrentIndex(currentSlide);
   };
-  const { categlories, setCateglories } = useCateglory();
 
-  const [cart, setCart] = useState<MenuItem[]>([]);
-  // console.log('categlories in context: ', categlories);
+
 
   return (
-    <main className="p-6 bg-white">
-      <h1 className="text-2xl text-black font-bold mb-4 text-center">
-        โต๊ะหมายเลข {table ? `(โต๊ะ ${table})` : ''}
+    <main className="max-w-md mx-auto min-h-screen p-6 bg-white relative">
+      <h1 className="text-3xl text-black font-medium mb-4 text-center">
+        โต๊ะหมายเลข {tableNumber ? `(โต๊ะ ${tableNumber})` : ''}
       </h1>
       {mounted && (
         <motion.div
@@ -116,7 +126,6 @@ export default function MenuPage() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          // className="bg-[#D7284E] rounded-2xl mt-4 h-fit w-full flex items-center justify-between px-6"
         >
           <div className="bg-[#D7284E] rounded-2xl mt-4 h-fit w-full flex items-center justify-between px-6">
             <div className="py-3 flex flex-col items-start">
@@ -149,7 +158,7 @@ export default function MenuPage() {
                 type="button"
                 onClick={() => {
                   setCateglories([item]);
-                  window.location.href = '/menu';
+                  router.push('/menu')
                 }}
               >
                 <div className="flex items-center justify-center bg-white overflow-hidden mb-2 h-24 w-24 rounded-lg ">
@@ -207,6 +216,7 @@ export default function MenuPage() {
               </div>
             </div>
           </div>
+          <FloatButtonHome />
         </motion.div>
       )}
     </main>

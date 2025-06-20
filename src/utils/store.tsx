@@ -1,4 +1,3 @@
-// store.tsx
 import { create } from 'zustand';
 
 type Product = {
@@ -15,5 +14,5 @@ type ProductStore = {
 
 export const useProductStore = create<ProductStore>((set) => ({
   product: null,
-  setProduct: (product) => set({ product }), // ✅ เพิ่ม setProduct
+  setProduct: (product) => set({ product }),
 }));

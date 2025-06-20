@@ -3,9 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { CategloryProvider } from '@/context/CategloryContext';
 import { ConfigProvider } from 'antd';
-import thTH from 'antd/locale/th_TH'; // ถ้าใช้ภาษาไทย
+import thTH from 'antd/locale/th_TH';
 import { Kanit } from 'next/font/google';
-// import 'antd/dist/reset.css'; 
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
