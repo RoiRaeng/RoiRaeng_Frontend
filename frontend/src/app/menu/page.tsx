@@ -14,10 +14,13 @@ import burgur2 from '@/assets/icons/burgur-2.jpg';
 import burgur3 from '@/assets/icons/burgur-3.jpg';
 import burgur4 from '@/assets/icons/burgur-4.jpg';
 
+import { useProductStore } from '@/utils/store';
+
 import Image from 'next/image';
 import { Tabs, TabsProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 export default function MenuPage() {
   const { categlories, setCateglories } = useCateglory();
@@ -29,7 +32,7 @@ export default function MenuPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  console.log('categlories in context: ', categlories);
+  // console.log('categlories in context: ', categlories);
 
   const products = [
     {
@@ -86,9 +89,26 @@ export default function MenuPage() {
     },
   ];
 
+  const router = useRouter();
+
   function renderProductList(data: any[]) {
     return data.map((product) => (
-      <div key={product.id} className="flex flex-col items-start bg-white">
+      <div
+        key={product.id}
+        className="flex flex-col items-start bg-white cursor-pointer"
+        onClick={() => {
+          console.log('Product clicked:', product);
+          useProductStore.getState().setProduct(product);
+          router.push('/menu/detail', {
+        // state: {
+        //   id: product.id,
+        //   image: product.image,
+        //   name: product.name,
+        //   price: product.price,
+        // },
+          } as any);
+        }}
+      >
         <Image
           src={product.image}
           alt={product.name}
