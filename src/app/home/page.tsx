@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, Carousel, Input } from 'antd';
-import { useSearchParams } from 'next/navigation';
+// import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { CiSearch } from 'react-icons/ci';
@@ -76,8 +76,8 @@ const contentStyle: React.CSSProperties = {
 };
 
 export default function MenuPage() {
-  const searchParams = useSearchParams();
-  const table = searchParams.get('table');
+  // const searchParams = useSearchParams();
+  // const table = searchParams.get('table');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [tableNumber, setTableNumber] = useState<string | null>(null);
@@ -85,15 +85,35 @@ export default function MenuPage() {
 
     const router = useRouter();
 
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setMounted(true), 100);
+  //   if (table) {
+  //     const decodedTable = decode(table) as any;
+  //     setTableNumber(decodedTable);
+  //     localStorage.setItem('table', decodedTable || '');
+  //   }
+  //   return () => clearTimeout(timer);
+  // }, [table]);
+
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 100);
+
+    // ✅ ปลอดภัยกว่าใช้ useSearchParams ตรงๆ
+    const params = new URLSearchParams(window.location.search);
+    const table = params.get('table');
+
     if (table) {
-      const decodedTable = decode(table) as any;
-      setTableNumber(decodedTable);
-      localStorage.setItem('table', decodedTable || '');
+      try {
+        const decodedTable = decode(table) as any;
+        setTableNumber(decodedTable);
+        localStorage.setItem('table', decodedTable || '');
+      } catch (err) {
+        console.error('Invalid table value:', err);
+      }
     }
+
     return () => clearTimeout(timer);
-  }, [table]);
+  }, []);
 
   const handleSlideChange = (currentSlide: number) => {
     setCurrentIndex(currentSlide);

@@ -5,6 +5,7 @@ import { CategloryProvider } from '@/context/CategloryContext';
 import { ConfigProvider } from 'antd';
 import thTH from 'antd/locale/th_TH';
 import { Kanit } from 'next/font/google';
+import { Providers } from './providers';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -52,7 +53,11 @@ export default function RootLayout({
             },
           }}
         >
-          <CategloryProvider>{children}</CategloryProvider>
+          <CategloryProvider>
+            <Providers>
+              <CategloryProvider>{children}</CategloryProvider>
+            </Providers>
+          </CategloryProvider>
         </ConfigProvider>
       </body>
     </html>
