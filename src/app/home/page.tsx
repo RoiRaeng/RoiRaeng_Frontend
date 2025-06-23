@@ -45,9 +45,9 @@ const categlory: Categlory[] = [
   { id: 1, name: 'พิซซ่า', image: CategloryPizza },
   { id: 2, name: 'เบอร์เกอร์', image: CategloryHambur },
   { id: 3, name: 'แซนวิซ', image: CateglorySanwish },
-  { id: 4, name: 'แซนวิซ', image: CateglorySanwish },
-  { id: 5, name: 'แซนวิซ', image: CateglorySanwish },
-  { id: 6, name: 'แซนวิซ', image: CateglorySanwish },
+  // { id: 4, name: 'แซนวิซ', image: CateglorySanwish },
+  // { id: 5, name: 'แซนวิซ', image: CateglorySanwish },
+  // { id: 6, name: 'แซนวิซ', image: CateglorySanwish },
 ];
 
 const carouselItems = [

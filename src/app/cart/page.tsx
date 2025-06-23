@@ -5,18 +5,19 @@ import BackIcon from '@/assets/icons/back-icon.svg';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/utils/cartStore';
 import BuyBar from '@/components/BuyBar';
+import { useEffect } from 'react';
+import SwipeableCartItem from '@/components/SwipeableCartItem';
 
 export default function MenuPage() {
   const router = useRouter();
   const cart = useCartStore((state: { cart: any }) => state.cart);
 
-  const updateQuantityByIndex = useCartStore(
-    (state) => state.updateQuantityByIndex
-  );
-  const totalQuantity = cart.reduce(
-    (sum: any, item: { quantity: any }) => sum + item.quantity,
-    0
-  );
+  useEffect(() => {
+    if (!cart || cart.length === 0) {
+      router.push('/home');
+    }
+  }, [cart, router]);
+
   const totalPrice = cart.reduce(
     (
       sum: number,
@@ -51,71 +52,21 @@ export default function MenuPage() {
 
       <div className="flex justify-between items-center font-semibold text-sm mb-2">
         <span>รายการอาหารที่สั่งซื้อ</span>
-        <span className="text-[#D7284E] cursor-pointer">สั่งอาหารเพิ่ม</span>
+        <span
+          className="text-[#D7284E] cursor-pointer"
+          onClick={() => router.push('/menu')}
+        >
+          สั่งอาหารเพิ่ม
+        </span>
       </div>
 
-      <div className="space-y-4">
-        {cart.map(
-          (
-            item: {
-              addition_types: any[];
-              id: any;
-              quantity: any;
-              name: any;
-              price: any;
-            },
-            index: number
-          ) => {
-            const selectedAdditions = item.addition_types.flatMap((type) =>
-              type.additions.filter((a: { selected: any }) => a.selected)
-            );
-
-            return (
-              <div key={item.id} className="rounded-md p-4">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <div className="border rounded w-6 h-6 flex items-center justify-center text-xs">
-                      {item.quantity}
-                    </div>
-                    <span className="font-semibold">{item.name}</span>
-                  </div>
-                  <span>฿{item.price}</span>
-                </div>
-                <div className="text-sm text-gray-500 mt-1">
-                  {selectedAdditions.map((add) => (
-                    <div key={add.id}>{add.name}</div>
-                  ))}
-                </div>
-                <div className="flex flex-row justify-between items-center mt-2">
-                  <div className="text-xs text-[#D7284E] mt-1 cursor-pointer">
-                    แก้ไข
-                  </div>
-                <div className='flex flex-row items-center gap-3'>
-
-
-                  <button
-                    className="w-6 h-6 rounded-full border flex items-center justify-center bg-gray-100"
-                    onClick={() => {
-                      if (item.quantity > 1) {
-                        updateQuantityByIndex(index, -1);
-                      }
-                    }}
-                  >
-                    -
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button
-                    className="w-6 h-6 rounded-full border flex items-center justify-center bg-gray-200"
-                    onClick={() => updateQuantityByIndex(index, 1)}
-                  >
-                    +
-                  </button>
-                                  </div>
-                </div>
-              </div>
-            );
-          }
-        )}
+      <div
+        className="space-y-4 overflow-y-auto scrollbar-hide"
+        style={{ maxHeight: 'calc(100vh - 320px)' }}
+      >
+        {cart.map((item: any, index: any) => (
+           <SwipeableCartItem key={item.id} item={item} index={index} />
+        ))}
       </div>
 
       <hr className="my-4" />
@@ -134,7 +85,7 @@ export default function MenuPage() {
           <span>฿{totalPrice}</span>
         </div>
       </div>
-      <BuyBar/>
+      <BuyBar />
     </main>
   );
 }

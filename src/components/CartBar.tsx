@@ -22,7 +22,7 @@ export default function CartBar() {
   if (cart.length === 0) return null; 
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300 z-50">
+    <div className="fixed bottom-0 p-2 left-0 w-full bg-white border-t border-gray-300 z-50">
       <div className="max-w-md mx-auto p-2">
         <button
           onClick={() => router.push('/cart')}

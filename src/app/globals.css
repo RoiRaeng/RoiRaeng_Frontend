@@ -9,6 +9,16 @@
   display: none !important;
 }
 
+/* ซ่อน scrollbar ทั้งหมดแบบ cross-browser */
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -28,14 +38,4 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-}
-
-/* styles/globals.css หรือไฟล์ CSS ทั่วไปที่ import ในโปรเจกต์ */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none; /* สำหรับ IE และ Edge */
-  scrollbar-width: none; /* สำหรับ Firefox */
 }

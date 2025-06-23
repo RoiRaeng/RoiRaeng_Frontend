@@ -28,6 +28,7 @@ type CartState = {
   cart: Product[];
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
+  removeFromCartByIndex: (index: number) => void; // <- เพิ่มใน type
   clearCart: () => void;
   updateQuantity: (productId: string, delta: number) => void;
   updateQuantityByIndex: (index: number, delta: number) => void; // <- เพิ่มใน type
@@ -87,6 +88,14 @@ export const useCartStore = create<CartState>((set) => ({
       }
     }),
 
+  removeFromCartByIndex: (index: number) =>
+    set((state) => {
+      const updatedCart = [...state.cart];
+      if (index < 0 || index >= updatedCart.length) return state;
+      updatedCart.splice(index, 1);
+      return { cart: updatedCart };
+    }),
+
   removeFromCart: (productId) =>
     set((state) => ({
       cart: state.cart.filter((item) => item.id !== productId),
@@ -109,7 +118,10 @@ export const useCartStore = create<CartState>((set) => ({
       const updatedCart = [...state.cart];
       if (!updatedCart[index]) return state;
 
-      updatedCart[index].quantity = Math.max(1, updatedCart[index].quantity + delta);
+      updatedCart[index].quantity = Math.max(
+        1,
+        updatedCart[index].quantity + delta
+      );
       return { cart: updatedCart };
     }),
 }));
