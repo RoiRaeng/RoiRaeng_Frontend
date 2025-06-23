@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/',
-        destination: '/login',
+        destination: '/home?table=NTpidXJnZXItc2VjcmV0LWtleQ==',
         permanent: false,
       },
     ];
