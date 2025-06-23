@@ -45,7 +45,10 @@ export default function BuyBar() {
             mutationAddMenu.mutate();
           }}
           disabled={mutationAddMenu.isPending}
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded disabled:opacity-50"
+          // className="w-full bg-blue-500 text-white py-2 px-4 rounded disabled:opacity-50"
+          className="w-full flex items-center justify-between bg-[#D7284E] text-white px-4 py-2 rounded-md shadow"
+
+        
         >
           {/* จำนวนรวม */}
           <div className="bg-white text-[#D7284E] font-bold w-7 h-7 rounded flex items-center justify-center mr-3 text-sm">
